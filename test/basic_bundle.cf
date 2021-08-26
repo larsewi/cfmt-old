@@ -1,0 +1,5 @@
+bundle agent __main__
+{
+  reports:
+      "Hello World!";
+}

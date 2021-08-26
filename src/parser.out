@@ -1,0 +1,86 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CLASS_GUARD
+    COMMENT
+    HASH_ROCKET
+    LEFT_BRACE
+    MACRO
+    NAKED_VAR
+    PROMISE_ARROW
+    PROMISE_GUARD
+    QUOTED_STRING
+    RIGHT_BRACE
+    SEMICOLON
+    VAR_CLASS
+
+Grammar
+
+Rule 0     S' -> policy
+Rule 1     policy -> <empty>
+Rule 2     policy -> blocks
+Rule 3     blocks -> block
+Rule 4     blocks -> block blocks
+Rule 5     block -> bundle
+Rule 6     block -> body
+Rule 7     block -> promise
+Rule 8     bundle -> BUNDLE bundletype bundleid arglist bundlebody
+Rule 9     bundletype -> SYMBOL
+Rule 10    bundleid -> SYMBOL
+Rule 11    body -> BODY bodytype bodyid arglist bodybody
+Rule 12    promise -> PROMISE promisetype promiseid arglist bodybody
+Rule 13    arglist -> arglist_begin arglist_items arglist_end
+Rule 14    arglist_begin -> LEFT_PAR
+Rule 15    arglist_items -> arglist_item
+Rule 16    arglist_items -> arglist_item COMMA
+Rule 17    arglist_items -> arglist_item COMMA arglist_items
+Rule 18    arglist_item -> IDENTIFIER
+Rule 19    arglist_end -> RIGHT_PAR
+
+Terminals, with rules where they appear
+
+BODY                 : 11
+BUNDLE               : 8
+CLASS_GUARD          : 
+COMMA                : 16 17
+COMMENT              : 
+HASH_ROCKET          : 
+IDENTIFIER           : 18
+LEFT_BRACE           : 
+LEFT_PAR             : 14
+MACRO                : 
+NAKED_VAR            : 
+PROMISE              : 12
+PROMISE_ARROW        : 
+PROMISE_GUARD        : 
+QUOTED_STRING        : 
+RIGHT_BRACE          : 
+RIGHT_PAR            : 19
+SEMICOLON            : 
+SYMBOL               : 9 10
+VAR_CLASS            : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+arglist              : 8 11 12
+arglist_begin        : 13
+arglist_end          : 13
+arglist_item         : 15 16 17
+arglist_items        : 13 17
+block                : 3 4
+blocks               : 2 4
+body                 : 6
+bodybody             : 11 12
+bodyid               : 11
+bodytype             : 11
+bundle               : 5
+bundlebody           : 8
+bundleid             : 8
+bundletype           : 8
+policy               : 0
+promise              : 7
+promiseid            : 12
+promisetype          : 12
+
