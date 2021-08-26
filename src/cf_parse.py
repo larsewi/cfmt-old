@@ -3,7 +3,7 @@ import cf_lex
 
 tokens = cf_lex.tokens
 
-# ***** Policy *****
+##### Policy #####
 
 def p_policy(p):
     '''policy :
@@ -21,7 +21,7 @@ def p_block(p):
              | promise'''
 
 
-# ***** Bundle *****
+##### Bundle #####
 
 def p_bundle(p):
     '''bundle : BUNDLE bundletype bundleid arglist bundlebody'''
@@ -36,7 +36,12 @@ def p_bundleid(p):
 
 
 def p_bundlebody(p):
-    '''bundlebody : bodybegin bundlestatements bodyend'''
+    '''bundlebody : LEFT_BRACE bundle_decl RIGHT_BRACE'''
+
+
+def p_bundle_decl(p):
+    '''bundle_decl :
+                   | bundle_statements'''
 
 
 def p_bundlestatements(p):
@@ -45,57 +50,124 @@ def p_bundlestatements(p):
 
 
 def p_bundlestatement(p):
-    '''bundlestatement : promiseguard promiselines'''
+    '''bundlestatement : promise_guard classpromises_decl'''
 
 
-def p_promiseguard(p):
-    '''promiseguard : PROMISE_GUARD'''
+def p_promise_guard(p):
+    '''promise_guard : PROMISE_GUARD'''
 
 
-def p_promiselines(p):
-    '''promiselines :
-                    | promiseline
-                    | promiseline promiselines'''
+def p_classpromises_decl(p):
+    '''classpromises_decl :
+                          | classpromises'''
 
 
-# ***** Body *****
+def p_classpromises(p):
+    '''classpromises : classpromise
+                     | classpromise classpromises'''
+
+
+def p_classpromise(p):
+    '''classpromise : classguard
+                    | promise_decl'''
+
+
+def p_promise_decl(p):
+    '''promise_decl : promise_line SEMICOLON'''
+
+
+def p_promise_line(p):
+    '''promise_line : promiser constraints_decl
+                    | promiser promise_arrow rval constraints_decl'''
+
+
+def p_promiser(p):
+    '''promiser : QUOTED_STRING'''
+
+
+def p_constraints_decl(p):
+    '''constraints_decl :
+                        | constraints'''
+
+
+def p_constraints(p):
+    '''constraints : constraint
+                   | constraint separator constraints'''
+
+
+def p_constraint(p):
+    '''constraint : constraint_id hash_rocket rval'''
+
+
+def p_constraint_id(p):
+    '''constraint_id : IDENTIFIER'''
+
+
+##### Body #####
 
 def p_body(p):
     '''body : BODY bodytype bodyid arglist bodybody'''
 
 
-# ***** Promise ****
+##### Promise #####
 
 def p_promise(p):
     '''promise : PROMISE promisetype promiseid arglist bodybody'''
 
 
-# ***** Argument list *****
+##### Argument list #####
 
 def p_arglist(p):
-    '''arglist : arglistbegin arglistitems arglistend'''
+    '''arglist :
+               | LEFT_PAR RIGHT_PAR
+               | LEFT_PAR arglist_items RIGHT_PAR
+               | LEFT_PAR arglist_items COMMA RIGHT_PAR'''
 
-def p_arglist_begin(p):
-    '''arglistbegin : LEFT_PAR'''
 
 def p_arglist_items(p):
-    '''arglistitems : arglistitem
-                     | arglistitem COMMA
-                     | arglistitem COMMA arglistitems'''
+    '''arglist_items : arglist_item
+                     | arglist_item COMMA
+                     | arglist_item COMMA arglist_items'''
+
 
 def p_arglist_item(p):
-    '''arglistitem : IDENTIFIER'''
-
-def p_arglist_end(p):
-    '''arglistend : RIGHT_PAR'''
+    '''arglist_item : IDENTIFIER'''
 
 
-# ***** Common *****
-def p_body_begin(p):
-    '''bodybegin : LEFT_BRACE'''
+##### List #####
 
-def p_body_end(p):
-    '''bodyend : RIGHT_BRACE'''
+def p_list(p):
+    '''list : LEFT_BRACE RIGHT_BRACE
+            | LEFT_BRACE list_items RIGHT_BRACE
+            | LEFT_BRACE list_items COMMA RIGHT_BRACE'''
+
+
+def p_list_items(p):
+    '''list_items : list_item
+                  | list_item COMMA list_items'''
+
+
+def p_list_item(p):
+    '''list_item : IDENTIFIER
+                 | QUOTED_STRING
+                 | NAKED_VAR
+                 | usefunction'''
+
+
+
+##### Common #####
+
+def p_rval(p):
+    '''rval : IDENTIFIER
+            | QUOTED_STRING
+            | NAKED_VAR
+            | list
+            | usefunction'''
+
+
+
+def p_error(p):
+    print("Error")
 
 
 bparser = yacc.yacc()
