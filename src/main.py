@@ -1,6 +1,7 @@
 import argparse
 import cf_parse
 
+
 def main():
     config = parse_arguments()
 
@@ -8,11 +9,13 @@ def main():
         file = open(filename)
         contents = file.read()
         prog = cf_parse.parse(contents)
+        print(prog)
 
 
 def parse_arguments():
     arg_parser = argparse.ArgumentParser(
-        description="Simple CFEngine policy formatting tool", epilog="Jeez Louise ...",
+        description="Simple CFEngine policy formatting tool",
+        epilog="Jeez Louise ...",
     )
     arg_parser.add_argument(
         "-d",

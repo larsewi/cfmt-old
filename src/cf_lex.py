@@ -17,8 +17,8 @@ tokens = (
     "RIGHT_BRACE",
     "LEFT_PAR",
     "RIGHT_PAR",
-#    "COMMENT",
-#    "MACRO",
+    #    "COMMENT",
+    #    "MACRO",
 )
 
 
