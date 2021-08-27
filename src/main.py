@@ -1,5 +1,4 @@
 import argparse
-import cf_lex
 import cf_parse
 
 def main():

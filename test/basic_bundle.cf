@@ -1,5 +1,6 @@
 bundle agent __main__
 {
   reports:
+    any::
       "Hello World!";
 }

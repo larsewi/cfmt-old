@@ -1,3 +1,4 @@
+import ply.lex as lex
 import ply.yacc as yacc
 import cf_lex
 
@@ -28,11 +29,11 @@ def p_bundle(p):
 
 
 def p_bundletype(p):
-    '''bundletype : SYMBOL'''
+    '''bundletype : IDENTIFIER'''
 
 
 def p_bundleid(p):
-    '''bundleid : SYMBOL'''
+    '''bundleid : IDENTIFIER'''
 
 
 def p_bundlebody(p):
@@ -41,7 +42,7 @@ def p_bundlebody(p):
 
 def p_bundle_decl(p):
     '''bundle_decl :
-                   | bundle_statements'''
+                   | bundlestatements'''
 
 
 def p_bundlestatements(p):
@@ -78,7 +79,7 @@ def p_promise_decl(p):
 
 def p_promise_line(p):
     '''promise_line : promiser constraints_decl
-                    | promiser promise_arrow rval constraints_decl'''
+                    | promiser PROMISE_ARROW rval constraints_decl'''
 
 
 def p_promiser(p):
@@ -92,11 +93,11 @@ def p_constraints_decl(p):
 
 def p_constraints(p):
     '''constraints : constraint
-                   | constraint separator constraints'''
+                   | constraint COMMA constraints'''
 
 
 def p_constraint(p):
-    '''constraint : constraint_id hash_rocket rval'''
+    '''constraint : constraint_id HASH_ROCKET rval'''
 
 
 def p_constraint_id(p):
@@ -109,10 +110,53 @@ def p_body(p):
     '''body : BODY bodytype bodyid arglist bodybody'''
 
 
+def p_bodytype(p):
+    '''bodytype : IDENTIFIER'''
+
+
+def p_bodyid(p):
+    '''bodyid : IDENTIFIER'''
+
+
+def p_bodybody(p):
+    '''bodybody : LEFT_BRACE inner_bodybody RIGHT_BRACE'''
+
+
+def p_inner_bodybody(p):
+    '''inner_bodybody :
+                      | bodyattribs'''
+
+
+def p_bodyattribs(p):
+    '''bodyattribs : bodyattrib
+                   | bodyattrib bodyattribs'''
+
+
+def p_bodyattrib(p):
+    '''bodyattrib : classguard
+                  | selection SEMICOLON'''
+
+
+def p_selection(p):
+    '''selection : selection_id HASH_ROCKET rval'''
+
+
+def p_selection_id(p):
+    '''selection_id : IDENTIFIER'''
+
+
 ##### Promise #####
 
 def p_promise(p):
     '''promise : PROMISE promisetype promiseid arglist bodybody'''
+
+
+def p_promisetype(p):
+    '''promisetype : IDENTIFIER'''
+
+
+def p_promiseid(p):
+    '''promiseid : IDENTIFIER'''
 
 
 ##### Argument list #####
@@ -126,8 +170,7 @@ def p_arglist(p):
 
 def p_arglist_items(p):
     '''arglist_items : arglist_item
-                     | arglist_item COMMA
-                     | arglist_item COMMA arglist_items'''
+                     | arglist_items COMMA arglist_item'''
 
 
 def p_arglist_item(p):
@@ -144,7 +187,7 @@ def p_list(p):
 
 def p_list_items(p):
     '''list_items : list_item
-                  | list_item COMMA list_items'''
+                  | list_items COMMA list_item'''
 
 
 def p_list_item(p):
@@ -154,8 +197,38 @@ def p_list_item(p):
                  | usefunction'''
 
 
+##### Function #####
+
+def p_usefunction(p):
+    '''usefunction : function_id farglist'''
+
+
+def p_function_id(p):
+    '''function_id : IDENTIFIER
+                   | NAKED_VAR'''
+
+def p_farglist(p):
+    '''farglist : LEFT_PAR RIGHT_PAR
+                | LEFT_PAR farglist_items RIGHT_PAR
+                | LEFT_PAR farglist_items COMMA RIGHT_PAR'''
+
+def p_farglist_items(p):
+    '''farglist_items : farglist_item
+                      | farglist_items COMMA farglist_item'''
+
+
+def p_farglist_item(p):
+    '''farglist_item : IDENTIFIER
+                     | QUOTED_STRING
+                     | NAKED_VAR
+                     | usefunction'''
+
 
 ##### Common #####
+
+def p_classguard(p):
+    '''classguard : CLASS_GUARD'''
+
 
 def p_rval(p):
     '''rval : IDENTIFIER
@@ -165,17 +238,32 @@ def p_rval(p):
             | usefunction'''
 
 
-
 def p_error(p):
-    print("Error")
+    print("Parser error")
 
 
-bparser = yacc.yacc()
+def print_debug(p):
+    print("Parse:")
+    print("\t", end="")
+    first = True
+    for e in reversed(p.slice):
+        if first:
+            first = False
+        else:
+            print(" -> ", end="")
+        if isinstance(e, lex.LexToken):
+            print("'%s'" % e.value, end="")
+        else:
+            print(e, end="")
+    print()
+
+
+cf_parser = yacc.yacc()
 
 
 def parse(data, debug=0):
-    bparser.error = 0
-    p = bparser.parse(data, debug=debug)
-    if bparser.error:
+    cf_parser.error = 0
+    p = cf_parser.parse(data, debug=debug)
+    if cf_parser.error:
         return None
     return p
