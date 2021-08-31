@@ -65,11 +65,6 @@ class BundleBody(Syntax):
         pass
 
 
-class BundleDecl(Syntax):
-    def pretty(self):
-        pass
-
-
 class BundleStatements(Syntax):
     def pretty(self):
         pass
@@ -85,21 +80,11 @@ class PromiseGuard(Syntax):
         pass
 
 
-class ClassPromisesDecl(Syntax):
-    def pretty(self):
-        pass
-
-
 class ClassPromises(Syntax):
     def pretty(self):
         pass
 
 class ClassPromise(Syntax):
-    def pretty(self):
-        pass
-
-
-class PromiseDecl(Syntax):
     def pretty(self):
         pass
 
@@ -148,11 +133,6 @@ class BodyID(Syntax):
 
 
 class BodyBody(Syntax):
-    def pretty(self):
-        pass
-
-
-class InnerBody(Syntax):
     def pretty(self):
         pass
 

@@ -47,14 +47,9 @@ def p_bundleid(p):
 
 
 def p_bundlebody(p):
-    """bundlebody : LEFT_BRACE bundle_decl RIGHT_BRACE"""
+    """bundlebody : LEFT_BRACE RIGHT_BRACE
+                  | LEFT_BRACE bundlestatements RIGHT_BRACE"""
     p[0] = BundleBody(p[1:])
-
-
-def p_bundle_decl(p):
-    """bundle_decl :
-                   | bundlestatements"""
-    p[0] = BundleDecl(p[1:])
 
 
 def p_bundlestatements(p):
@@ -64,7 +59,7 @@ def p_bundlestatements(p):
 
 
 def p_bundlestatement(p):
-    """bundlestatement : promise_guard classpromises_decl"""
+    """bundlestatement : promise_guard classpromises"""
     p[0] = BundleStatement(p[1:])
 
 
@@ -73,27 +68,17 @@ def p_promise_guard(p):
     p[0] = PromiseGuard(p[1:])
 
 
-def p_classpromises_decl(p):
-    """classpromises_decl :
-                          | classpromises"""
-    p[0] = ClassPromisesDecl(p[1:])
-
-
 def p_classpromises(p):
-    """classpromises : classpromise
+    """classpromises :
+                     | classpromise
                      | classpromise classpromises"""
     p[0] = ClassPromises(p[1:])
 
 
 def p_classpromise(p):
     """classpromise : classguard
-                    | promise_decl"""
+                    | promise_line SEMICOLON"""
     p[0] = ClassPromise(p[1:])
-
-
-def p_promise_decl(p):
-    """promise_decl : promise_line SEMICOLON"""
-    p[0] = PromiseDecl(p[1:])
 
 
 def p_promise_line(p):
@@ -144,14 +129,9 @@ def p_bodyid(p):
 
 
 def p_bodybody(p):
-    """bodybody : LEFT_BRACE inner_bodybody RIGHT_BRACE"""
+    """bodybody : LEFT_BRACE RIGHT_BRACE
+                | LEFT_BRACE bodyattribs RIGHT_BRACE"""
     p[0] = BodyBody(p[1:])
-
-
-def p_inner_bodybody(p):
-    """inner_bodybody :
-                      | bodyattribs"""
-    p[0] = InnerBody(p[1:])
 
 
 def p_bodyattribs(p):
