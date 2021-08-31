@@ -71,7 +71,7 @@ def p_bundlestatements(p):
     if len(p) == 2:
         pretty("%s", p)
     else:
-        pretty("%s\n%s", p)
+        pretty("%s\n\n%s", p)
 
 
 def p_bundlestatement(p):
@@ -114,26 +114,21 @@ def p_promise_decl(p):
 
 
 def p_promise_line(p):
-    """promise_line : promiser constraints_decl
-                    | promiser PROMISE_ARROW rval constraints_decl"""
-    if len(p) == 3:
-        pretty("%s%s", p)
+    """promise_line : promiser
+                    | promiser constraints
+                    | promiser PROMISE_ARROW rval constraints"""
+    if len(p) == 2:
+        pretty("%s", p)
+    elif len(p) == 3:
+        pretty("%s\n%s", p)
     else:
-        pretty("%s %s %s%s", p)
+        pretty("%s %s %s\n%s", p)
 
 
 def p_promiser(p):
     """promiser : QUOTED_STRING"""
     pretty("      %s", p)
 
-
-def p_constraints_decl(p):
-    """constraints_decl :
-                        | constraints"""
-    if len(p) == 1:
-        pretty("", p)
-    else:
-        pretty("%s", p)
 
 
 def p_constraints(p):
@@ -142,12 +137,12 @@ def p_constraints(p):
     if len(p) == 2:
         pretty("%s", p)
     else:
-        pretty("%s%s %s", p)
+        pretty("%s%s\n%s", p)
 
 
 def p_constraint(p):
     """constraint : constraint_id HASH_ROCKET rval"""
-    pretty("%s %s %s", p)
+    pretty(" " * 8 + "%s %s %s", p)
 
 
 def p_constraint_id(p):
@@ -207,7 +202,7 @@ def p_bodyattrib(p):
 
 def p_selection(p):
     """selection : selection_id HASH_ROCKET rval"""
-    pretty("%s %s %s", p)
+    pretty(" " * 2 + "%s %s %s", p)
 
 
 def p_selection_id(p):
@@ -273,11 +268,11 @@ def p_list(p):
             | LEFT_BRACE list_items RIGHT_BRACE
             | LEFT_BRACE list_items COMMA RIGHT_BRACE"""
     if len(p) == 3:
-        pretty("%s%s", p)
+        pretty("%s %s", p)
     elif len(p) == 4:
-        pretty("%s%s%s", p)
+        pretty("%s %s %s", p)
     elif len(p) == 5:
-        pretty("%s%s%s%s", p)
+        pretty("%s %s%s %s", p)
 
 
 def p_list_items(p):
