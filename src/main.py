@@ -1,5 +1,4 @@
 import argparse
-import sys
 from logger import Logger
 from cf_parse import parse_policy
 
@@ -11,36 +10,11 @@ def main():
     logger.set_debug(args.debug)
     logger.set_inform(not args.quiet)
 
-    reformatted = 0
-    exit_code = 0
     for filename in args.file:
         file = open(filename)
-        in_data = file.read()
-        out_data = parse_policy(in_data)
-
-        if args.check:
-            if in_data != out_data:
-                reformatted += 1
-                exit_code = 1
-                logger.log_inform("Would reformat '%s'" % filename)
-            continue
-
-        if args.print:
-            print(out_data)
-            continue
-
-        if args.confirm:
-            if input("Reformat %s? [Y/n]:" % filename) not in ("Y", "y"):
-                continue
-
-        if in_data != out_data:
-            reformatted += 1
-            logger.log_inform("Reformatted '%s'" % filename)
-            # TODO: write output to file
-
-    logger.log_inform("%d file(s) %sreformatted" % (reformatted, "would be " if args.check else ""))
-
-    sys.exit(exit_code)
+        data = file.read()
+        policy = parse_policy(data)
+        policy.log_syntax_tree()
 
 
 def parse_arguments():
