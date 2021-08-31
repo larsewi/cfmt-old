@@ -1,5 +1,5 @@
+import sys
 from logger import Logger
-import ply.lex as lex
 import ply.yacc as yacc
 import cf_lex
 
@@ -357,9 +357,21 @@ def p_rval(p):
     pretty("%s", p)
 
 
+def p_comments(p):
+    """comments :
+                | comment
+                | comment comments"""
+
+
+def p_comment(p):
+    """comment : COMMENT"""
+
+
 def p_error(p):
     logger = Logger()
     logger.log_error("Parser error: There are sytax errors in policy file")
+    logger.log_debug(p)
+    sys.exit(1)
 
 
 def pretty(fstr, p):

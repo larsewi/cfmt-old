@@ -1,0 +1,29 @@
+body common control
+{
+  bundlesequence => { "myvars", "hello", "bye" };
+}
+
+bundle agent myvars
+{
+  vars:
+      "name"
+        string => "Gekko";
+}
+
+bundle agent hello
+{
+  classes:
+      "myclass"
+        expression => and("any");
+
+  reports:
+    myclass::
+      "Hello $(myvars.name)!";
+}
+
+bundle agent bye
+{
+  reports:
+    any::
+      "Bye $(myvars.name)!";
+}

@@ -1,3 +1,4 @@
+import sys
 import ply.lex as lex
 from logger import Logger
 
@@ -18,105 +19,111 @@ tokens = (
     "RIGHT_BRACE",
     "LEFT_PAR",
     "RIGHT_PAR",
-    #    "COMMENT",
+    "COMMENT",
     #    "MACRO",
 )
 
 
-def t_QUOTED_STRING(t):
-    r"\"((\\(.|\n))|[^\"\\])*\"|\'((\\(.|\n))|[^\'\\])*\'|`[^`]*`"
-    print_debug(t)
-    return t
-
-
-def t_CLASS_GUARD(t):
-    r"[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::"
-    print_debug(t)
-    return t
-
-
-def t_PROMISE_GUARD(t):
-    r"[a-zA-Z_]+:"
-    print_debug(t)
-    return t
-
-
 def t_BUNDLE(t):
-    r"bundle"
-    print_debug(t)
+    r"bundle\s"
+    t.lexpos -= 1
+    t.value = t.value[:-1]
+    log_token(t)
     return t
 
 
 def t_BODY(t):
-    r"body"
-    print_debug(t)
+    r"body\s"
+    t.lexpos -= 1
+    t.value = t.value[:-1]
+    log_token(t)
     return t
 
 
 def t_PROMISE(t):
     r"promise"
-    print_debug(t)
+    t.lexpos -= 1
+    t.value = t.value[:-1]
+    log_token(t)
+    return t
+
+
+def t_QUOTED_STRING(t):
+    r"\"((\\(.|\n))|[^\"\\])*\"|\'((\\(.|\n))|[^\'\\])*\'|`[^`]*`"
+    log_token(t)
+    return t
+
+
+def t_CLASS_GUARD(t):
+    r"[.|&!()a-zA-Z0-9_\200-\377:][\t .|&!()a-zA-Z0-9_\200-\377:]*::"
+    log_token(t)
+    return t
+
+
+def t_PROMISE_GUARD(t):
+    r"[a-zA-Z_]+:"
+    log_token(t)
     return t
 
 
 def t_HASH_ROCKET(t):
     r"=>"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_PROMISE_ARROW(t):
     r"->"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_NAKED_VAR(t):
     r"[$@][(][a-zA-Z0-9_\[\]\200-\377.:]+[)]|[$@][{][a-zA-Z0-9_\[\]\200-\377.:]+[}]|[$@][(][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[)]|[$@][{][a-zA-Z0-9_\200-\377.:]+[\[][a-zA-Z0-9_$(){}\200-\377.:]+[\]]+[}]"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_COMMA(t):
     r","
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_SEMICOLON(t):
     r";"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_LEFT_BRACE(t):
     r"{"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_RIGHT_BRACE(t):
     r"}"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_LEFT_PAR(t):
     r"[(]"
-    print_debug(t)
+    log_token(t)
     return t
 
 
 def t_RIGHT_PAR(t):
     r"[)]"
-    print_debug(t)
+    log_token(t)
     return t
 
 
-# def t_COMMENT(t):
-#     r"[#][^\n]*"
-#     print_debug(t)
-#     return t
+def t_COMMENT(t):
+    r"[#][^\n]*"
+    log_token(t)
+    return t
 
 
 # def t_MACRO(t):
@@ -125,10 +132,10 @@ def t_RIGHT_PAR(t):
 #     return t
 
 
-# Must be last, since many of the tokens above are subsets of identifier
+# Some tokens above are subsets of IDENTIFIER
 def t_IDENTIFIER(t):
-    r"[a-zA-Z0-9_\200-\377]+"
-    print_debug(t)
+    r"[a-zA-Z0-9_\200-\377]+(\:[a-zA-Z0-9_\200-\377]+)?"
+    log_token(t)
     return t
 
 
@@ -145,10 +152,11 @@ def t_newline(t):
 def t_error(t):
     logger = Logger()
     logger.log_error("Lexer error: Illegal character '%s' on line '%s'" % (t.value[0], t.lineno))
-    t.lexer.skip(1)
+    sys.exit(1)
+#    t.lexer.skip(1)
 
 
-def print_debug(t):
+def log_token(t):
     logger = Logger()
     logger.log_debug("Token:")
     logger.log_debug("\tType: %s" % t.type)
