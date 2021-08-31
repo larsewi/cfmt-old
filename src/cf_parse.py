@@ -1,3 +1,4 @@
+from logger import Logger
 import ply.lex as lex
 import ply.yacc as yacc
 import cf_lex
@@ -9,7 +10,7 @@ tokens = cf_lex.tokens
 
 def p_policy(p):
     """policy :
-    | blocks"""
+              | blocks"""
     if len(p) == 1:
         pretty("", p)
     else:
@@ -18,7 +19,7 @@ def p_policy(p):
 
 def p_blocks(p):
     """blocks : block
-    | block blocks"""
+              | block blocks"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -27,8 +28,8 @@ def p_blocks(p):
 
 def p_block(p):
     """block : bundle
-    | body
-    | promise"""
+             | body
+             | promise"""
     pretty("%s", p)
 
 
@@ -57,7 +58,7 @@ def p_bundlebody(p):
 
 def p_bundle_decl(p):
     """bundle_decl :
-    | bundlestatements"""
+                   | bundlestatements"""
     if len(p) == 1:
         pretty("", p)
     else:
@@ -66,7 +67,7 @@ def p_bundle_decl(p):
 
 def p_bundlestatements(p):
     """bundlestatements : bundlestatement
-    | bundlestatement bundlestatements"""
+                        | bundlestatement bundlestatements"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -85,7 +86,7 @@ def p_promise_guard(p):
 
 def p_classpromises_decl(p):
     """classpromises_decl :
-    | classpromises"""
+                          | classpromises"""
     if len(p) == 1:
         pretty("", p)
     else:
@@ -94,7 +95,7 @@ def p_classpromises_decl(p):
 
 def p_classpromises(p):
     """classpromises : classpromise
-    | classpromise classpromises"""
+                     | classpromise classpromises"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -103,7 +104,7 @@ def p_classpromises(p):
 
 def p_classpromise(p):
     """classpromise : classguard
-    | promise_decl"""
+                    | promise_decl"""
     pretty("%s", p)
 
 
@@ -114,7 +115,7 @@ def p_promise_decl(p):
 
 def p_promise_line(p):
     """promise_line : promiser constraints_decl
-    | promiser PROMISE_ARROW rval constraints_decl"""
+                    | promiser PROMISE_ARROW rval constraints_decl"""
     if len(p) == 3:
         pretty("%s%s", p)
     else:
@@ -128,7 +129,7 @@ def p_promiser(p):
 
 def p_constraints_decl(p):
     """constraints_decl :
-    | constraints"""
+                        | constraints"""
     if len(p) == 1:
         pretty("", p)
     else:
@@ -137,7 +138,7 @@ def p_constraints_decl(p):
 
 def p_constraints(p):
     """constraints : constraint
-    | constraint COMMA constraints"""
+                   | constraint COMMA constraints"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -179,7 +180,7 @@ def p_bodybody(p):
 
 def p_inner_bodybody(p):
     """inner_bodybody :
-    | bodyattribs"""
+                      | bodyattribs"""
     if len(p) == 1:
         pretty("", p)
     else:
@@ -188,7 +189,7 @@ def p_inner_bodybody(p):
 
 def p_bodyattribs(p):
     """bodyattribs : bodyattrib
-    | bodyattrib bodyattribs"""
+                   | bodyattrib bodyattribs"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -197,7 +198,7 @@ def p_bodyattribs(p):
 
 def p_bodyattrib(p):
     """bodyattrib : classguard
-    | selection SEMICOLON"""
+                  | selection SEMICOLON"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -237,9 +238,9 @@ def p_promiseid(p):
 
 def p_arglist(p):
     """arglist :
-    | LEFT_PAR RIGHT_PAR
-    | LEFT_PAR arglist_items RIGHT_PAR
-    | LEFT_PAR arglist_items COMMA RIGHT_PAR"""
+               | LEFT_PAR RIGHT_PAR
+               | LEFT_PAR arglist_items RIGHT_PAR
+               | LEFT_PAR arglist_items COMMA RIGHT_PAR"""
     if len(p) == 1:
         pretty("", p)
     elif len(p) == 3:
@@ -252,7 +253,7 @@ def p_arglist(p):
 
 def p_arglist_items(p):
     """arglist_items : arglist_item
-    | arglist_items COMMA arglist_item"""
+                     | arglist_items COMMA arglist_item"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -269,8 +270,8 @@ def p_arglist_item(p):
 
 def p_list(p):
     """list : LEFT_BRACE RIGHT_BRACE
-    | LEFT_BRACE list_items RIGHT_BRACE
-    | LEFT_BRACE list_items COMMA RIGHT_BRACE"""
+            | LEFT_BRACE list_items RIGHT_BRACE
+            | LEFT_BRACE list_items COMMA RIGHT_BRACE"""
     if len(p) == 3:
         pretty("%s%s", p)
     elif len(p) == 4:
@@ -281,7 +282,7 @@ def p_list(p):
 
 def p_list_items(p):
     """list_items : list_item
-    | list_items COMMA list_item"""
+                  | list_items COMMA list_item"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -290,9 +291,9 @@ def p_list_items(p):
 
 def p_list_item(p):
     """list_item : IDENTIFIER
-    | QUOTED_STRING
-    | NAKED_VAR
-    | usefunction"""
+                 | QUOTED_STRING
+                 | NAKED_VAR
+                 | usefunction"""
     pretty("%s", p)
 
 
@@ -306,14 +307,14 @@ def p_usefunction(p):
 
 def p_function_id(p):
     """function_id : IDENTIFIER
-    | NAKED_VAR"""
+                   | NAKED_VAR"""
     pretty("%s", p)
 
 
 def p_farglist(p):
     """farglist : LEFT_PAR RIGHT_PAR
-    | LEFT_PAR farglist_items RIGHT_PAR
-    | LEFT_PAR farglist_items COMMA RIGHT_PAR"""
+                | LEFT_PAR farglist_items RIGHT_PAR
+                | LEFT_PAR farglist_items COMMA RIGHT_PAR"""
     if len(p) == 3:
         pretty("%s%s", p)
     if len(p) == 4:
@@ -324,7 +325,7 @@ def p_farglist(p):
 
 def p_farglist_items(p):
     """farglist_items : farglist_item
-    | farglist_items COMMA farglist_item"""
+                      | farglist_items COMMA farglist_item"""
     if len(p) == 2:
         pretty("%s", p)
     else:
@@ -333,9 +334,9 @@ def p_farglist_items(p):
 
 def p_farglist_item(p):
     """farglist_item : IDENTIFIER
-    | QUOTED_STRING
-    | NAKED_VAR
-    | usefunction"""
+                     | QUOTED_STRING
+                     | NAKED_VAR
+                     | usefunction"""
     pretty("%s", p)
 
 
@@ -349,15 +350,16 @@ def p_classguard(p):
 
 def p_rval(p):
     """rval : IDENTIFIER
-    | QUOTED_STRING
-    | NAKED_VAR
-    | list
-    | usefunction"""
+            | QUOTED_STRING
+            | NAKED_VAR
+            | list
+            | usefunction"""
     pretty("%s", p)
 
 
 def p_error(p):
-    print("Parser error")
+    logger = Logger()
+    logger.log_error("Parser error: There are sytax errors in policy file")
 
 
 def pretty(fstr, p):
@@ -370,7 +372,7 @@ def pretty(fstr, p):
 cf_parser = yacc.yacc()
 
 
-def parse(data, debug=0):
+def parse_policy(data, debug=0):
     cf_parser.error = 0
     p = cf_parser.parse(data, debug=debug)
     if cf_parser.error:

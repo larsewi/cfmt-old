@@ -1,4 +1,5 @@
 import ply.lex as lex
+from logger import Logger
 
 tokens = (
     "IDENTIFIER",
@@ -142,16 +143,17 @@ def t_newline(t):
 
 
 def t_error(t):
-    print("Lexer: Illegal character '%s'" % t.value[0])
-    print(t)
+    logger = Logger()
+    logger.log_error("Lexer error: Illegal character '%s' on line '%s'" % (t.value[0], t.lineno))
     t.lexer.skip(1)
 
 
 def print_debug(t):
-    print("Token:")
-    print("\tType: %s" % t.type)
-    print("\tValue: '%s'" % t.value)
-    print("\tLine no: %s" % t.lineno)
+    logger = Logger()
+    logger.log_debug("Token:")
+    logger.log_debug("\tType: %s" % t.type)
+    logger.log_debug("\tValue: '%s'" % t.value)
+    logger.log_debug("\tLine no: %s" % t.lineno)
 
 
 lexer = lex.lex()
