@@ -24,7 +24,8 @@ def p_blocks(p):
 def p_block(p):
     """block : bundle
              | body
-             | promise"""
+             | promise
+             | comment"""
     p[0] = Block(p[1:])
 
 
@@ -59,7 +60,8 @@ def p_bundlestatements(p):
 
 
 def p_bundlestatement(p):
-    """bundlestatement : promise_guard classpromises"""
+    """bundlestatement : promise_guard
+                       | promise_guard classpromises"""
     p[0] = BundleStatement(p[1:])
 
 
@@ -69,8 +71,7 @@ def p_promise_guard(p):
 
 
 def p_classpromises(p):
-    """classpromises :
-                     | classpromise
+    """classpromises : classpromise
                      | classpromise classpromises"""
     p[0] = ClassPromises(p[1:])
 
