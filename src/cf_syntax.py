@@ -214,7 +214,7 @@ class ListItem(Syntax):
 ##### Function #####
 
 
-class UseFunction(Syntax):
+class Function(Syntax):
     def pretty(self):
         pass
 
@@ -224,17 +224,17 @@ class FunctionID(Syntax):
         pass
 
 
-class FArgList(Syntax):
+class FnArgList(Syntax):
     def pretty(self):
         pass
 
 
-class FArgItems(Syntax):
+class FnArgListItems(Syntax):
     def pretty(self):
         pass
 
 
-class FArgItem(Syntax):
+class FnArgListItem(Syntax):
     def pretty(self):
         pass
 

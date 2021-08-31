@@ -216,16 +216,16 @@ def p_list_item(p):
     """list_item : IDENTIFIER
                  | QUOTED_STRING
                  | NAKED_VAR
-                 | usefunction"""
+                 | function"""
     p[0] = ListItem(p[1:])
 
 
 ##### Function #####
 
 
-def p_usefunction(p):
-    """usefunction : function_id farglist"""
-    p[0] = UseFunction(p[1:])
+def p_function(p):
+    """function : function_id fn_arglist"""
+    p[0] = Function(p[1:])
 
 
 def p_function_id(p):
@@ -234,25 +234,25 @@ def p_function_id(p):
     p[0] = FunctionID(p[1:])
 
 
-def p_farglist(p):
-    """farglist : LEFT_PAR RIGHT_PAR
-                | LEFT_PAR farglist_items RIGHT_PAR
-                | LEFT_PAR farglist_items COMMA RIGHT_PAR"""
-    p[0] = FArgList(p[1:])
+def p_fn_arglist(p):
+    """fn_arglist : LEFT_PAR RIGHT_PAR
+                | LEFT_PAR fn_arglist_items RIGHT_PAR
+                | LEFT_PAR fn_arglist_items COMMA RIGHT_PAR"""
+    p[0] = FnArgList(p[1:])
 
 
-def p_farglist_items(p):
-    """farglist_items : farglist_item
-                      | farglist_items COMMA farglist_item"""
-    p[0] = FArgItems(p[1:])
+def p_fn_arglist_items(p):
+    """fn_arglist_items : fn_arglist_item
+                        | fn_arglist_items COMMA fn_arglist_item"""
+    p[0] = FnArgListItems(p[1:])
 
 
-def p_farglist_item(p):
-    """farglist_item : IDENTIFIER
-                     | QUOTED_STRING
-                     | NAKED_VAR
-                     | usefunction"""
-    p[0] = FArgItem(p[1:])
+def p_fn_arglist_item(p):
+    """fn_arglist_item : IDENTIFIER
+                       | QUOTED_STRING
+                       | NAKED_VAR
+                       | function"""
+    p[0] = FnArgListItem(p[1:])
 
 
 ##### Common #####
@@ -268,7 +268,7 @@ def p_rval(p):
             | QUOTED_STRING
             | NAKED_VAR
             | list
-            | usefunction"""
+            | function"""
     p[0] = RVal(p[1:])
 
 
