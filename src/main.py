@@ -15,6 +15,7 @@ def main():
         data = file.read()
         policy = parse_policy(data)
         policy.log_syntax_tree()
+        policy.pretty()
 
 
 def parse_arguments():

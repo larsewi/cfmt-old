@@ -29,12 +29,13 @@ class Syntax(ABC):
 
 class Policy(Syntax):
     def pretty(self):
-        pass
+        print("Test 1")
+        self._children[0].pretty()
 
 
 class Blocks(Syntax):
     def pretty(self):
-        pass
+        print("Test 2")
 
 
 class Block(Syntax):
