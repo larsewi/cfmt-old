@@ -1,27 +1,34 @@
 from abc import ABC, abstractmethod
+from pretty_printer import PrettyPrinter
 from logger import Logger
 
 
 class Syntax(ABC):
+    logger = Logger()
+    pp = PrettyPrinter()
     indent = 0
     INDENT_SIZE = 2
 
     def __init__(self, p):
-        self._logger = Logger()
-        self._children = p
+        self._lineno = p.lineno(0)
+        self._linespan = p.linespan(0)
+        self._lexpos = p.lexpos(0)
+        self._lexspan = p.lexspan(0)
+        self._children = p[1:]
+        p[0] = self
 
     @abstractmethod
     def pretty(self):
         pass
 
     def log_syntax_tree(self):
-        self._logger.log_debug(" " * Syntax.indent + "<%s>" % self.__class__.__name__)
+        Syntax.logger.log_debug(" " * Syntax.indent + "<%s>" % self.__class__.__name__)
         Syntax.indent += Syntax.INDENT_SIZE
         for child in self._children:
             if isinstance(child, Syntax):
                 child.log_syntax_tree()
         Syntax.indent -= Syntax.INDENT_SIZE
-        self._logger.log_debug(" " * Syntax.indent + "</%s>" % self.__class__.__name__)
+        Syntax.logger.log_debug(" " * Syntax.indent + "</%s>" % self.__class__.__name__)
 
 
 ##### Policy #####
@@ -29,18 +36,20 @@ class Syntax(ABC):
 
 class Policy(Syntax):
     def pretty(self):
-        print("Test 1")
-        self._children[0].pretty()
+        for child in self._children:
+            child.pretty()
 
 
 class Blocks(Syntax):
     def pretty(self):
-        print("Test 2")
+        for child in self._children:
+            child.pretty()
 
 
 class Block(Syntax):
     def pretty(self):
-        pass
+        for child in self._children:
+            print(child._lineno)
 
 
 ##### Bundle #####
@@ -253,6 +262,23 @@ class RVal(Syntax):
         pass
 
 
+# Comments or Macros
+class CMS(Syntax):
+    def pretty(self):
+        pass
+
+
+# Comment or Macro
+class CM(Syntax):
+    def pretty(self):
+        pass
+
+
 class Comment(Syntax):
+    def pretty(self):
+        pass
+
+
+class Macro(Syntax):
     def pretty(self):
         pass

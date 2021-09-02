@@ -20,7 +20,7 @@ tokens = (
     "LEFT_PAR",
     "RIGHT_PAR",
     "COMMENT",
-    #    "MACRO",
+    "MACRO",
 )
 
 
@@ -126,10 +126,10 @@ def t_COMMENT(t):
     return t
 
 
-# def t_MACRO(t):
-#     r"@.*"
-#     print_debug(t)
-#     return t
+def t_MACRO(t):
+    r"@.*"
+    log_token(t)
+    return t
 
 
 # Some tokens above are subsets of IDENTIFIER
