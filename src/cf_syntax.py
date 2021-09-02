@@ -18,7 +18,7 @@ class Syntax(ABC):
         p[0] = self
 
     @abstractmethod
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
     def log_syntax_tree(self):
@@ -35,19 +35,19 @@ class Syntax(ABC):
 
 
 class Policy(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         for child in self._children:
-            child.pretty()
+            child.pretty(pp)
 
 
 class Blocks(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         for child in self._children:
-            child.pretty()
+            child.pretty(pp)
 
 
 class Block(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         for child in self._children:
             print(child._lineno)
 
@@ -56,71 +56,71 @@ class Block(Syntax):
 
 
 class Bundle(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BundleType(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BundleID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BundleBody(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BundleStatements(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BundleStatement(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class PromiseGuard(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ClassPromises(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 class ClassPromise(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class PromiseLine(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Promiser(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Constraints(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Constraint(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ConstraintID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -128,42 +128,42 @@ class ConstraintID(Syntax):
 
 
 class Body(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BodyType(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BodyID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BodyBody(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BodyAttribs(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class BodyAttrib(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Selection(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class SelectionID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -171,17 +171,17 @@ class SelectionID(Syntax):
 
 
 class Promise(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class PromiseType(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class PromiseID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -189,17 +189,17 @@ class PromiseID(Syntax):
 
 
 class ArgList(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ArgListItems(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ArgListItem(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -207,17 +207,17 @@ class ArgListItem(Syntax):
 
 
 class List(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ListItems(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class ListItem(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -225,27 +225,27 @@ class ListItem(Syntax):
 
 
 class Function(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class FunctionID(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class FnArgList(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class FnArgListItems(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class FnArgListItem(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
@@ -253,32 +253,32 @@ class FnArgListItem(Syntax):
 
 
 class ClassGuard(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class RVal(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 # Comments or Macros
 class CMS(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 # Comment or Macro
 class CM(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Comment(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass
 
 
 class Macro(Syntax):
-    def pretty(self):
+    def pretty(self, pp):
         pass

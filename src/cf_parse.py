@@ -311,7 +311,7 @@ cf_parser = yacc.yacc()
 
 def parse_policy(data, debug=0):
     cf_parser.error = 0
-    p = cf_parser.parse(data, debug=debug, tracking=True)
+    policy = cf_parser.parse(data, debug=debug, tracking=True)
     if cf_parser.error:
         return None
-    return p
+    return policy

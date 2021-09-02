@@ -1,4 +1,5 @@
 import argparse
+from pretty_printer import PrettyPrinter
 from logger import Logger
 from cf_parse import parse_policy
 
@@ -15,7 +16,9 @@ def main():
         data = file.read()
         policy = parse_policy(data)
         policy.log_syntax_tree()
-        policy.pretty()
+        pp = PrettyPrinter()
+        policy.pretty(pp)
+        print(pp)
 
 
 def parse_arguments():
