@@ -25,8 +25,7 @@ def p_block(p):
     """block : bundle
              | body
              | promise
-             | comment
-             | macro"""
+             | comments_and_macros"""
     Block(p)
 
 
@@ -34,17 +33,25 @@ def p_block(p):
 
 
 def p_bundle(p):
-    """bundle : BUNDLE bundletype bundleid arglist bundlebody"""
+    """bundle : bundlekeyword bundletype bundleid arglist bundlebody"""
     Bundle(p)
 
 
+def p_bundlekeyword(p):
+    """bundlekeyword : BUNDLE
+                     | BUNDLE comments_and_macros"""
+    BundleKeyword(p)
+
+
 def p_bundletype(p):
-    """bundletype : IDENTIFIER"""
+    """bundletype : IDENTIFIER
+                  | IDENTIFIER comments_and_macros"""
     BundleType(p)
 
 
 def p_bundleid(p):
-    """bundleid : IDENTIFIER"""
+    """bundleid : IDENTIFIER
+                | IDENTIFIER comments_and_macros"""
     BundleID(p)
 
 
@@ -181,9 +188,9 @@ def p_promiseid(p):
 
 def p_arglist(p):
     """arglist :
-               | LEFT_PAR RIGHT_PAR
-               | LEFT_PAR arglist_items RIGHT_PAR
-               | LEFT_PAR arglist_items COMMA RIGHT_PAR"""
+               | left_par right_par
+               | left_par arglist_items right_par
+               | left_par arglist_items comma right_par"""
     ArgList(p)
 
 
@@ -274,19 +281,12 @@ def p_rval(p):
     RVal(p)
 
 
-# Comments or Macros
-def p_cms(p):
-    """cms :
-           | cm
-           | cm cms"""
-    CMS(p)
-
-
-# Comment or Macro
-def p_cm(p):
-    """cm : comment
-          | macro"""
-    CM(p)
+def p_comments_and_macros(p):
+    """comments_and_macros : comment
+                          | comment comments_and_macros
+                          | macro
+                          | macro comments_and_macros"""
+    CommentsAndMacros(p)
 
 
 def p_comment(p):
@@ -297,6 +297,21 @@ def p_comment(p):
 def p_macro(p):
     """macro : MACRO"""
     Macro(p)
+
+
+def p_left_par(p):
+    """left_par : LEFT_PAR
+                | LEFT_PAR comments_and_macros"""
+
+
+def p_right_par(p):
+    """right_par : RIGHT_PAR
+                 | RIGHT_PAR comments_and_macros"""
+
+
+def p_comma(p):
+    """comma : COMMA
+             | COMMA comments_and_macros"""
 
 
 def p_error(p):

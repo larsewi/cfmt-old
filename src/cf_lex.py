@@ -122,6 +122,8 @@ def t_RIGHT_PAR(t):
 
 def t_COMMENT(t):
     r"[#][^\n]*"
+    #r"([#][^\n]*)(\n[ \t]*[#][^\n]*)*"
+    #t.value = re.sub(r"\n[ \t]*[#]", "\n#", t.value)
     log_token(t)
     return t
 

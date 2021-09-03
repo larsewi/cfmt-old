@@ -1,7 +1,7 @@
 import argparse
 from pretty_printer import PrettyPrinter
 from logger import Logger
-from cf_parse import parse_policy
+from cf_lex import lexer
 
 
 def main():
@@ -14,12 +14,9 @@ def main():
     for filename in args.file:
         file = open(filename)
         data = file.read()
-        policy = parse_policy(data)
-        policy.log_syntax_tree()
-        pp = PrettyPrinter()
-        policy.pretty(pp)
-        print(pp)
-
+        lexer.input(data)
+        pretty = PrettyPrinter(lexer)
+        print(pretty)
 
 def parse_arguments():
     arg_parser = argparse.ArgumentParser(
